@@ -1,0 +1,20 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+        <button (click)="SendMassage()" type="button" class="btn btn-primary">
+            Display It Large
+          </button>
+
+    </div>
+
+  </div>
+  <div class="row">
+      <div class="container-fluid">
+        <app-thumbnails-viewer *ngFor="let image of thumImages; let i=index" [ParentImages]="image" (BigImageEvent)="ReciveBigImage($event)"></app-thumbnails-viewer>
+      </div>
+    </div>
+
+</div>
+
+
