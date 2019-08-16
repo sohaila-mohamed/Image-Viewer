@@ -9,6 +9,7 @@ import { InteractionsService } from './interactions.service';
 import { ThumbnailsViewerComponent } from './components/thumbnails-viewer/thumbnails-viewer.component';
 import { MainViewerComponent } from './components/main-viewer/main-viewer.component';
 import { MainComponent } from './components/main/main.component';
+import { MainHeaderComponent } from './components/main-header/main-header.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MainComponent } from './components/main/main.component';
     ThumbnailsViewerComponent,
     MainViewerComponent,
     MainComponent,
+    MainHeaderComponent,
 
   ],
   imports: [

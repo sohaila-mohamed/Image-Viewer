@@ -1,0 +1,20 @@
+.mainNav {
+  background-color: #1b1b1b;
+  border-bottom: solid 2px white;
+
+
+}
+a{
+  color: #ffffff;
+}
+.search{
+  background-color:  #1b1b1b;
+  border-color:white;
+}
+.searchBtn{
+  color:#ffffff;
+  border-color: white;
+}
+.searchBtn:hover{
+  background-color:silver;
+}
