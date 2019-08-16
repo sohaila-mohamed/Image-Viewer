@@ -16,7 +16,7 @@ export class ThumbnailComponent implements OnInit {
 
 
   constructor(service:ServiceService, private _interaction:InteractionsService) {
-    this.thumImages=service.GetImages();
+    this.thumImages=service.GetSmallImages();
   }
 
   ngOnInit() {
@@ -29,7 +29,7 @@ export class ThumbnailComponent implements OnInit {
     console.log(this.BigImageSource);
     this._interaction.SendBigImageSource(this.BigImageSource);
   }
-  
+
 
 
 }

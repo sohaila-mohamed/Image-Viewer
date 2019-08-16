@@ -11,10 +11,6 @@ export class ServiceService {
 
   constructor() {
     this.SmallImages=[
-     {scr1: '../assets/InternProjectsample/small.png',scr2: '../assets/InternProjectsample/1883337_small.png',scr3: '../assets/InternProjectsample/1883338_small.png'},
-     {scr1: '../assets/InternProjectsample/1883339_small.png',scr2: '../assets/InternProjectsample/1883340_small.png',scr3: '../assets/InternProjectsample/1883341_small.png'},
-     {scr1: '../assets/InternProjectsample/1883342_small.png',scr2: '../assets/InternProjectsample/1883343_small.png',scr3: '../assets/InternProjectsample/1883344_small.png'},
-     {scr1: '../assets/InternProjectsample/1883345_small.png',scr2: '../assets/InternProjectsample/1883346_small.png',scr3: '../assets/InternProjectsample/im_0013_bak - copy.dcm.small.png'},
      {scr1: '../assets/InternProjectsample/im_0014_bak - copy.dcm.small.png',scr2: '../assets/InternProjectsample/im_0015_bak - copy.dcm.small.png',scr3: '../assets/InternProjectsample/im_0016_bak - copy.dcm.small.png'},
      {scr1: '../assets/InternProjectsample/im_0017_bak - copy.dcm.small.png',scr2: '../assets/InternProjectsample/im_0018_bak - copy.dcm.small.png',scr3: '../assets/InternProjectsample/im_0019_bak - copy.dcm.small.png'},
      {scr1: '../assets/InternProjectsample/im_0020_bak - copy.dcm.small.png',scr2: '../assets/InternProjectsample/im_0021_bak - copy.dcm.small.png',scr3: '../assets/InternProjectsample/im_0022_bak - copy.dcm.small.png'},
@@ -27,7 +23,7 @@ export class ServiceService {
 
     ];
   }
-GetImages=() =>{
+GetSmallImages=() =>{
     return this.SmallImages;}
 }
 

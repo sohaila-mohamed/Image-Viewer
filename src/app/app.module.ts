@@ -10,6 +10,8 @@ import { ThumbnailsViewerComponent } from './components/thumbnails-viewer/thumbn
 import { MainViewerComponent } from './components/main-viewer/main-viewer.component';
 import { MainComponent } from './components/main/main.component';
 import { MainHeaderComponent } from './components/main-header/main-header.component';
+import { HorizontalToolbarComponent } from './components/horizontal-toolbar/horizontal-toolbar.component';
+import { VerticalToolbarComponent } from './components/vertical-toolbar/vertical-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { MainHeaderComponent } from './components/main-header/main-header.compon
     MainViewerComponent,
     MainComponent,
     MainHeaderComponent,
+    HorizontalToolbarComponent,
+    VerticalToolbarComponent,
 
   ],
   imports: [
