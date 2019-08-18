@@ -1,3 +1,16 @@
 .MainViewContainer{
-  padding-left: 0px
+  padding-left: 0px;
+  background-color: #fafafa;
+  margin-top: 11px;
+
+
+
+}
+.HeadRow{
+  background-color: #161616;
+
+}
+
+.toolbar{
+  padding-right: 0px;
 }

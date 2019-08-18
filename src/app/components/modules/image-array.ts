@@ -1,6 +1,9 @@
-export class Images
+import { Image } from './image-type';
+
+export class ImagesHome
 {
-    scr1: string
-    scr2:string
-    scr3:string
+   img1?: Image;
+   img2?: Image;
+   img3?: Image;
+
 }

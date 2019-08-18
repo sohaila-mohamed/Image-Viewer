@@ -1,5 +1,6 @@
-import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
-import { Images } from '../modules/image-array';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Image } from '../modules/image-type';
+import { ImagesHome } from '../modules/image-array';
 @Component({
   selector: 'app-thumbnails-viewer',
   templateUrl: './thumbnails-viewer.component.html',
@@ -7,8 +8,8 @@ import { Images } from '../modules/image-array';
 })
 export class ThumbnailsViewerComponent implements OnInit {
 
-  @Input() ParentImages:Images;
-  @Output() BigImageEvent= new EventEmitter<string>();
+  @Input() ParentImages: ImagesHome;
+  @Output() BigImageEvent = new EventEmitter<string>();
 
 
   constructor() {
@@ -16,13 +17,13 @@ export class ThumbnailsViewerComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log("ThumbImages Are Recived",this.ParentImages);
+    console.log('ThumbImages Are Recived', this.ParentImages);
 
 
   }
-  SendBigImage=()=>{
-    console.log("Sendit");
-    this.BigImageEvent.emit(this.ParentImages.scr3);
+  SendBigImage = (scr:string) => {
+    console.log('Sendit');
+    this.BigImageEvent.emit(scr);
 
   }
 

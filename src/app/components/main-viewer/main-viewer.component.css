@@ -1,8 +1,13 @@
 .BigImageViewer{
-  background-color:silver;
   width: 400px;
   height: 400px;
-  padding: 50px;
+  /* padding-top: 50px; */
+  
+  justify-content: center;
 
 
+}
+img{
+
+  margin-top: 50px;
 }

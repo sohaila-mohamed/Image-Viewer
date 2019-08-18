@@ -1,5 +1,5 @@
 import { Component, OnInit,Input,Output, EventEmitter} from '@angular/core'
-import { Images } from '../modules/image-array';
+import { ImagesHome } from '../modules/image-array';
 import { ServiceService } from 'src/app/service.service';
 import { InteractionsService } from 'src/app/interactions.service';
 
@@ -10,7 +10,7 @@ import { InteractionsService } from 'src/app/interactions.service';
   styleUrls: ['./thumbnail.component.css']
 })
 export class ThumbnailComponent implements OnInit {
-  thumImages: Images[];
+  thumImages: ImagesHome[];
   @Input() massage:string;
   BigImageSource:string;
 
