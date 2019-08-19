@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Image } from '../modules/image-type';
 import { ImagesHome } from '../modules/image-array';
+import { IThumbImage } from 'src/app/CustomTypes/Types';
 @Component({
   selector: 'app-thumbnails-viewer',
   templateUrl: './thumbnails-viewer.component.html',
@@ -8,7 +9,7 @@ import { ImagesHome } from '../modules/image-array';
 })
 export class ThumbnailsViewerComponent implements OnInit {
 
-  @Input() ParentImages: ImagesHome;
+  @Input() SmallImage: IThumbImage;
   @Output() BigImageEvent = new EventEmitter<string>();
 
 
@@ -17,7 +18,7 @@ export class ThumbnailsViewerComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('ThumbImages Are Recived', this.ParentImages);
+    console.log('ThumbImages Are Recived', this.SmallImage);
 
 
   }

@@ -4,3 +4,29 @@
 
 }
 
+/* .thumnails{
+  resize:both;
+  overflow: auto;
+  cursor:col-resize;
+} */
+
+/* #resizableDiv {
+  overflow:auto;
+  resize:horizontal;
+  display:inline-block;
+
+  position: relative;
+}
+
+
+
+div #resizableDiv:after {
+    content: "";
+    resize: horizontal;
+    bottom: 0;
+    right: 0;
+    cursor: e-resize;
+    position: absolute;
+    z-index: 9;
+
+} */

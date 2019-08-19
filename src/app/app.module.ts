@@ -4,7 +4,7 @@ import { AlertModule,ButtonsModule  } from 'ngx-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ThumbnailComponent } from './components/thumbnail/thumbnail.component';
-import { ServiceService } from './service.service';
+import { ServiceService } from './Data.service';
 import { InteractionsService } from './interactions.service';
 import { ThumbnailsViewerComponent } from './components/thumbnails-viewer/thumbnails-viewer.component';
 import { MainViewerComponent } from './components/main-viewer/main-viewer.component';
