@@ -10,6 +10,7 @@ import { IThumbImage } from 'src/app/CustomTypes/Types';
 export class ThumbnailsViewerComponent implements OnInit {
 
   @Input() SmallImage: IThumbImage;
+ 
   @Output() BigImageEvent = new EventEmitter<string>();
 
 

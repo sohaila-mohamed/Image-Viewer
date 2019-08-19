@@ -14,12 +14,14 @@ export class ThumbnailComponent implements OnInit {
   thumImages: IThumbImage[];
   @Input() massage: string;
   BigImageId: number;
+  ImagesNumber: number;
 
 
   constructor(service: ServiceService, private _interaction: InteractionsService) {
   // tslint:disable-next-line: no-unused-expression
 
   this.thumImages = service.GetSmallImages();
+  this.ImagesNumber = this.thumImages.length;
 
   }
 
