@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ImagesHome } from './components/modules/image-array';
-import { IImageSource } from './CustomTypes/Types';
+import { IImageSource, InstanceModel } from './CustomTypes/Types';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse} from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceService {
+export class DataService {
 
   ImageSourceArray: IImageSource[];
-
-
-  constructor() {
+  ListOfImagesId: InstanceModel[];
+  GetIDsUrl: string = 'http://localhost:53501/api/MetaData/Get';
+  GetImageUrl: string = 'http://localhost:53501/api/Thumbnails/Get/?Id=';
+  ImageBlob:Blob;
+  constructor(private http: HttpClient) {
     // tslint:disable-next-line: max-line-length
     this.ImageSourceArray = [
 
@@ -56,5 +60,12 @@ GetSmallImages = () => {
   GetFullImage = (id: number) => {
     return this.ImageSourceArray.filter(p => p.Id == id).map(p => p.FullImage);
   }
+
+GetImageIDs(): Observable<InstanceModel[]>{
+    return this.http.get<InstanceModel[]>(this.GetIDsUrl);
+}
+GetImage(ImageId: string): Observable<Blob> {
+  return this.http.get(this.GetImageUrl + ImageId,{responseType:'blob'});
 }
 
+}

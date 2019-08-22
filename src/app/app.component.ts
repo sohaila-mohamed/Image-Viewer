@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './Data.service';
+import { InstanceModel } from './CustomTypes/Types';
 
 @Component({
   selector: 'app-root',
@@ -6,8 +8,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./App.component.css'
 ]
 })
-export class AppComponent {
-  title = 'image-viewer';
+export class AppComponent implements OnInit {
+ 
+constructor(private _service: DataService){}
+
+  ngOnInit() {
+
+
+  }
+
+
+
 
 
 

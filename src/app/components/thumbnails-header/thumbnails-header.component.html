@@ -1,0 +1,35 @@
+<div class="container-fluid box">
+        <div class="row">
+          <div class="col-lg-6 d-none d-sm-block mx-sm-0">
+              <h2>Thumbnails</h2>
+
+          </div>
+
+          <div class="col-lg-6 col-sm-12 mx-sm-0 btnholder ">
+              <button class="btn mx-sm-0 " (click)="SendIDsRequest()" >Choose File</button>
+              <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+                {{progress}}%
+              </span>
+
+              <span style="font-weight:bold;color:green;" *ngIf="message">
+                {{message}}
+              </span>
+          </div>
+
+        </div>
+         <div class="row">
+            <div class=" col-md-10   split-border"><span></span></div>
+
+         </div>
+
+        <div class="row">
+
+          <div class="col-12">
+              <p>Show result for : {{ImagesNumber}}</p>
+
+          </div>
+
+
+
+        </div>
+      </div>

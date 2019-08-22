@@ -2,34 +2,8 @@
 <div class="container-fluid ">
   <div class="row">
     <div class="col-md-12 ">
-      <div class="container-fluid box">
-        <div class="row">
-          <div class="col-lg-6 d-none d-sm-block mx-sm-0">
-              <h2>Thumbnails</h2>
+      <app-thumbnails-header [ImagesNumber]="ImagesNumber"></app-thumbnails-header>
 
-          </div>
-
-          <div class="col-lg-6 col-sm-12 mx-sm-0 btnholder ">
-              <button class="btn mx-sm-0 " >Choose File</button>
-          </div>
-
-        </div>
-         <div class="row">
-            <div class=" col-md-10   split-border"><span></span></div>
-
-         </div>
-
-        <div class="row">
-
-          <div class="col-12">
-              <p>Show result for : {{ImagesNumber}}</p>
-
-          </div>
-
-
-
-        </div>
-      </div>
 
 
 
@@ -42,8 +16,9 @@
       <div class="container-fluid thumnailsContainer">
           <div class="row Row">
               <div class="col-md-12 " >
-                <app-thumbnails-viewer *ngFor="let image of thumImages; let i=index" [SmallImage]="image" (BigImageEvent)="ReciveImageId($event)"></app-thumbnails-viewer>
+                <app-thumbnails-viewer *ngFor="let image of thumImages "  [SmallImage]="image"  (BigImageEvent)="ReciveImageId($event)"></app-thumbnails-viewer>
         </div>
+        <img [src]="ImageSource">
         </div>
       </div>
     </div>

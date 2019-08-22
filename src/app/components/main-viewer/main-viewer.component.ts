@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InteractionsService } from 'src/app/interactions.service';
-import { ServiceService } from 'src/app/Data.service';
+import { DataService } from 'src/app/Data.service';
 
 @Component({
   selector: 'app-main-viewer',
@@ -10,7 +10,7 @@ import { ServiceService } from 'src/app/Data.service';
 export class MainViewerComponent implements OnInit {
   ImageID: number;
   BigImageSource:string[];
-  constructor(private _interaction: InteractionsService, private service: ServiceService) {
+  constructor(private _interaction: InteractionsService, private service: DataService) {
 
    }
 

@@ -8,3 +8,6 @@ export interface IThumbImage{
   Thumb: string;
 
  }
+export interface InstanceModel{
+  Id:string;
+}

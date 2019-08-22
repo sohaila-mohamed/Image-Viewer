@@ -10,7 +10,8 @@ import { IThumbImage } from 'src/app/CustomTypes/Types';
 export class ThumbnailsViewerComponent implements OnInit {
 
   @Input() SmallImage: IThumbImage;
- 
+  @Input() ImageId:string;
+
   @Output() BigImageEvent = new EventEmitter<string>();
 
 
@@ -19,7 +20,7 @@ export class ThumbnailsViewerComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('ThumbImages Are Recived', this.SmallImage);
+    console.log('ImageID Are Recived', this.ImageId);
 
 
   }
