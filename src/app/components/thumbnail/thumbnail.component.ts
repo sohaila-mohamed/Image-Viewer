@@ -18,15 +18,15 @@ export class ThumbnailComponent implements OnInit {
   BigImageId: number;
   ImagesNumber: number;
   ImagesIds: InstanceModel[];
-  ImageSource: SafeUrl;
 
 
 
-  constructor(private _service: DataService, private _interaction: InteractionsService,private domSanitizer: DomSanitizer) {
+
+  constructor(private _service: DataService, private _interaction: InteractionsService) {
   // tslint:disable-next-line: no-unused-expression
 
   this.thumImages = _service.GetSmallImages();
-  this.ImagesNumber = this.thumImages.length;
+
 
 
   }
@@ -38,12 +38,11 @@ export class ThumbnailComponent implements OnInit {
     this._service.GetImageIDs().subscribe(data =>{
       this.ImagesIds = data;
       console.log("From Angular",this.ImagesIds);
+      this.ImagesNumber = this.ImagesIds.length;
 
-      data.forEach(element => {
-        this.RequestImages(this.ImagesIds[0].Id);
 
-      });
      });
+
 
 
 
@@ -58,15 +57,7 @@ export class ThumbnailComponent implements OnInit {
     this._interaction.SendBigImageID(this.BigImageId);
   }
 
-  RequestImages(Id:string){
-    this._service.GetImage(Id)
-    .subscribe(data =>{
-    this.ImageSource = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(data));
 
-    console.log("Image Request From Angular",this.ImageSource);
-
-  });
-  }
 
 
 

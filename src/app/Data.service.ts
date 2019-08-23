@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { ImagesHome } from './components/modules/image-array';
 import { IImageSource, InstanceModel } from './CustomTypes/Types';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse} from '@angular/common/http';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
+
 
   ImageSourceArray: IImageSource[];
   ListOfImagesId: InstanceModel[];
@@ -52,6 +53,8 @@ export class DataService {
 
     ];
   }
+
+
 GetSmallImages = () => {
     return this.ImageSourceArray.map(p => {
       return {Id: p.Id, Thumb: p.ThumbImage};
@@ -66,6 +69,7 @@ GetImageIDs(): Observable<InstanceModel[]>{
 }
 GetImage(ImageId: string): Observable<Blob> {
   return this.http.get(this.GetImageUrl + ImageId,{responseType:'blob'});
+
 }
 
 }
