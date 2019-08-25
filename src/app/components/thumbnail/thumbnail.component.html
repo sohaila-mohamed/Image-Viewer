@@ -15,8 +15,8 @@
   <div class="row thumnails">
       <div class="container-fluid thumnailsContainer">
           <div class="row Row">
-              <div class="col-md-12 " >
-                <app-thumbnails-viewer *ngFor="let ImageId of ImagesIds "  [ImageID]="ImageId.Id"  (BigImageEvent)="ReciveImageId($event)"></app-thumbnails-viewer>
+              <div class="col-md-12 " *ngFor="let Urls of Combined$  "    >
+                <img [src]="Urls" class="img">
         </div>
         </div>
       </div>

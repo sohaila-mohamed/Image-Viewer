@@ -24,7 +24,7 @@ export class ThumbnailsViewerComponent implements OnInit {
 
   ngOnInit() {
     console.log('ImageID Are Recived', this.ImageID);
-    this.RequestImages(this.ImageID);
+    // this.RequestImages(this.ImageID);
 
 
 
@@ -35,13 +35,13 @@ export class ThumbnailsViewerComponent implements OnInit {
     this.BigImageEvent.emit(scr);
 
   }
-  RequestImages(Id:string){
-    this._service.GetImage(Id)
-    .subscribe(data =>{
-    this.ImageSource = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(data));
-    console.log("Image Request From Angular",this.ImageSource);
+  // RequestImages(Id:st){
+  //   this._service.GetImage(Id)
+  //   .subscribe(data =>{
+  //   this.ImageSource = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(data));
+  //   console.log("Image Request From Angular",this.ImageSource);
 
-  });
-  }
+  // });
+  // }
 
 }

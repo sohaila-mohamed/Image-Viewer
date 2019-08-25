@@ -67,8 +67,9 @@ GetSmallImages = () => {
 GetImageIDs(): Observable<InstanceModel[]>{
     return this.http.get<InstanceModel[]>(this.GetIDsUrl);
 }
-GetImage(ImageId: string): Observable<Blob> {
-  return this.http.get(this.GetImageUrl + ImageId,{responseType:'blob'});
+GetImage(ImageId: InstanceModel): Observable<Blob> {
+  return this.http.get(this.GetImageUrl + ImageId.Id,{responseType:'blob'});
+
 
 }
 

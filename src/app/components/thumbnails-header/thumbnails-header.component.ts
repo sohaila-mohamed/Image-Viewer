@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse} from '@angular/common/http';
+import { forkJoin } from 'rxjs';
+import { DataService } from 'src/app/Data.service';
 
 @Component({
   selector: 'app-thumbnails-header',
@@ -13,12 +15,11 @@ export class ThumbnailsHeaderComponent implements OnInit {
   public progress: number;
   public message: string;
 
-  constructor() { }
+  constructor(private _service: DataService) { }
 
   ngOnInit() {
   }
 
-  
 }
 
 
