@@ -15,8 +15,8 @@
   <div class="row thumnails">
       <div class="container-fluid thumnailsContainer">
           <div class="row Row">
-              <div class="col-md-12 " *ngFor="let Urls of Combined$  "    >
-                <img [src]="Urls" class="img">
+              <div class="col-md-4 " *ngFor="let Url of Combined$ | async "    >
+                <img [src]="Url.Image" class="img" (click)="ReciveImageId(Url.Id)">
         </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ export class ThumbnailsViewerComponent implements OnInit {
     this.BigImageEvent.emit(scr);
 
   }
-  // RequestImages(Id:st){
+  // RequestImages(Id:string){
   //   this._service.GetImage(Id)
   //   .subscribe(data =>{
   //   this.ImageSource = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(data));

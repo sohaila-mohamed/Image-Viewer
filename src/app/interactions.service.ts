@@ -7,10 +7,10 @@ import { Subject } from 'rxjs';
 export class InteractionsService {
 
   constructor() { }
-  private _BigImageID=new Subject<number>();
+  private _BigImageID=new Subject<string>();
   BigImage$=this._BigImageID.asObservable();
 
-  SendBigImageID(Id:number){
+  SendBigImageID(Id: string){
     this._BigImageID.next(Id);
 
   }

@@ -2,12 +2,14 @@
   width: 400px;
   height: 400px;
   /* padding-top: 50px; */
-  
+
   justify-content: center;
 
 
 }
-img{
+#my-canvas{
 
   margin-top: 50px;
+  /* width: 400px;
+  height: 300px; */
 }

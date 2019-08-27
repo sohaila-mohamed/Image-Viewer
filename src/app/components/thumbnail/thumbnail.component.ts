@@ -6,7 +6,7 @@ import { IImageSource, IThumbImage, InstanceModel } from 'src/app/CustomTypes/Ty
 import { isDefined } from '@angular/compiler/src/util';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { forkJoin, Subject } from 'rxjs';
-import { map, mergeMap, combineAll } from 'rxjs/operators';
+import { map, mergeMap, combineAll, scan, reduce } from 'rxjs/operators';
 import { Observable, from  } from 'rxjs';
 
 @Component({
@@ -29,11 +29,11 @@ export class ThumbnailComponent implements OnInit {
   }
   thumImages: IThumbImage[];
   @Input() massage: string;
-  BigImageId: number;
+  BigImageId: string;
   ImagesNumber: number;
   ImagesIds: InstanceModel[];
   Combined$ = new Observable<SafeUrl>();
-
+  Url: SafeUrl;
 
 
 
@@ -42,12 +42,28 @@ export class ThumbnailComponent implements OnInit {
     console.log('Send Get Request');
     this._service.GetImageIDs().subscribe(data => {
       this.ImagesIds = data;
-      console.log("From Angular", this.ImagesIds);
+      console.log('From Angular', this.ImagesIds);
       this.ImagesNumber = this.ImagesIds.length;
 
-      this.Combined$ = from(this.ImagesIds).pipe(mergeMap(param => {return this._service.GetImage(param).
-        pipe(map(result => {return this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(result))})); }));
-        this.Combined$.subscribe(x => {console.log(x,typeof(x))});
+      this.Combined$ = from(this.ImagesIds)
+      .pipe(mergeMap(param => {
+        return this._service.GetImage(param).
+        pipe(map(result => {
+          this.Url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(result));
+          return  {Id: param.Id, Image: this.Url};
+         }));
+        }),
+        reduce<any>((acc, value) => {
+          if (acc.length ) {
+            return [...acc, value];
+          } else {
+            return [value, acc];
+
+          }
+
+        }));
+      this.Combined$.subscribe(x => {console.log(x, typeof(x)); });
+
 
 
 
@@ -66,7 +82,7 @@ export class ThumbnailComponent implements OnInit {
 
   ReciveImageId = ($event) => {
     this.BigImageId = $event;
-    console.log(this.BigImageId);
+    console.log("Id from thumb",this.BigImageId);
     this._interaction.SendBigImageID(this.BigImageId);
   }
 }

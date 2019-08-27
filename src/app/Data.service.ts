@@ -14,7 +14,8 @@ export class DataService {
   ListOfImagesId: InstanceModel[];
   GetIDsUrl: string = 'http://localhost:53501/api/MetaData/Get';
   GetImageUrl: string = 'http://localhost:53501/api/Thumbnails/Get/?Id=';
-  ImageBlob:Blob;
+  GetFullImageUrl: string = 'http://localhost:53501/api/ImageViewer/Get/?Id=';
+  ImageBlob: Blob;
   constructor(private http: HttpClient) {
     // tslint:disable-next-line: max-line-length
     this.ImageSourceArray = [
@@ -60,15 +61,16 @@ GetSmallImages = () => {
       return {Id: p.Id, Thumb: p.ThumbImage};
     });
   }
-  GetFullImage = (id: number) => {
-    return this.ImageSourceArray.filter(p => p.Id == id).map(p => p.FullImage);
+  GetFullImage = (id: string) => {
+    return this.http.get(this.GetFullImageUrl + id + '.full', {responseType: 'blob'});
+
   }
 
 GetImageIDs(): Observable<InstanceModel[]>{
     return this.http.get<InstanceModel[]>(this.GetIDsUrl);
 }
 GetImage(ImageId: InstanceModel): Observable<Blob> {
-  return this.http.get(this.GetImageUrl + ImageId.Id,{responseType:'blob'});
+  return this.http.get(this.GetImageUrl + ImageId.Id, {responseType: 'blob'});
 
 
 }
