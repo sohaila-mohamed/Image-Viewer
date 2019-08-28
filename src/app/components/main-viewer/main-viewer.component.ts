@@ -12,6 +12,9 @@ export class MainViewerComponent implements OnInit {
   ImageID: string;
   BigImageSource: string;
 
+  myCanvas :HTMLCanvasElement;
+  myContext :CanvasRenderingContext2D;
+  img :HTMLImageElement;
 
 
   constructor(private _interaction: InteractionsService, private service: DataService, private domSanitizer: DomSanitizer) {
@@ -26,29 +29,24 @@ export class MainViewerComponent implements OnInit {
     this.BigImageSource = this.domSanitizer.sanitize(SecurityContext.RESOURCE_URL, this.domSanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(data)));
     console.log('Image Request From Angular', this.BigImageSource, typeof(this.BigImageSource));
 
+    this.myCanvas = <HTMLCanvasElement> document.getElementById('my-canvas');
+    this.myContext = this.myCanvas.getContext('2d');
+    this.img=new Image();
+    this.LoadImage();
 
-    const myCanvas = <HTMLCanvasElement> document.getElementById('my-canvas');
-    const myContext = myCanvas.getContext('2d');
-    const img = new Image();
 
-    img.src = this.BigImageSource;
-    img.onload = () => {
-      const imgWidth = img.width;
-      const imgHeight = img.height;
-      myCanvas.width = imgWidth;
-      myCanvas.height = imgHeight;
-      myContext.drawImage(img, 0, 0, imgWidth, imgHeight);
 
-      };
 
-      //get pixels array
-    const imageData = myContext.getImageData(0, 0, myCanvas.width, myCanvas.height);
-    for (let i = 0; i <= imageData.data.length; i++){
-      imageData.data[i] = 1;
 
-    }
-    myContext.putImageData(imageData, 0, 0);
-    console.log(imageData.data);
+
+
+
+
+
+
+
+
+
 
   });
 
@@ -56,17 +54,51 @@ export class MainViewerComponent implements OnInit {
 
 
   });
+
 
 
 
   }
-//   const context  = <HTMLCanvasElement> document.getElementById('canvas');
-//   const ctx = context.getContext('2d');
-// const img = new Image();
-// img.src = "this.BigImageSource" ;
-// img.onload = function () {
-// ctx.drawImage(img, 300, 100);
-// }
+  LoadImage(){
+    this.img.src = this.BigImageSource;
+    this.img.onload = () => {
+      const imgWidth = this.img.width;
+      const imgHeight = this.img.height;
+      this.myCanvas.width = imgWidth;
+      this.myCanvas.height = imgHeight;
+      const aspect = this.img.naturalWidth / this.img.naturalHeight;
+      this.myContext.drawImage(this.img, 0, 0, imgWidth, imgHeight);
+
+      };
+
+  }
+
+  grayscale(){
+    console.log("on Gray");
+      let ImgData = this.myContext.getImageData(0, 0, this.myCanvas.width, this.myCanvas.height);
+      let arr = ImgData.data;
+      console.log("before", ImgData.data);
+      for (let i = 0; i < arr.length; i = i + 4){
+            const ttl = arr[i] + arr[i + 1] + arr[i + 2];
+
+            // tslint:disable-next-line: radix
+            const avg: number = Math.round (ttl / 3);
+            arr[i] = avg;   //red
+            arr[i + 1] = avg; //green
+            arr[i + 2] = avg; //blue
+        }
+
+      ImgData.data.set(arr);
+      this.myContext.putImageData(ImgData, 0, 0);
+      console.log("after", ImgData.data);
+
+
+  }
+
+
+
+
+
 
 
 }
