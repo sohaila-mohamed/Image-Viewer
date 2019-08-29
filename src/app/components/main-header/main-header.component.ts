@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InteractionsService } from 'src/app/interactions.service';
 
 @Component({
   selector: 'app-main-header',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _interaction: InteractionsService,) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InteractionsService } from 'src/app/interactions.service';
 
 @Component({
   selector: 'app-horizontal-toolbar',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HorizontalToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _interaction: InteractionsService,) { }
 
   ngOnInit() {
+  }
+  ApplyGrayFilter(){
+    this._interaction.SendGrayFilterOrder();
   }
 
 }
