@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, SecurityContext } from '@angular/core';
 import { InteractionsService } from 'src/app/interactions.service';
 import { DataService } from 'src/app/Data.service';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { SVGDrawingSheet } from '../../CustomTypes/DrawingSheet';
 declare const SVG: any;
 
 @Component({
@@ -17,15 +18,10 @@ export class MainViewerComponent implements OnInit {
   myCanvas: HTMLCanvasElement;
   myContext: CanvasRenderingContext2D;
   img: HTMLImageElement;
-  drawing: any;
-  startX: number;
-  startY: number;
-  endX: number;
-  endY: number;
-  width: number;
-  height: number;
   cropx: number;
   cropy: number;
+  SVGElement: SVGDrawingSheet = new SVGDrawingSheet();
+
 
 
   constructor(private _interaction: InteractionsService, private service: DataService, private domSanitizer: DomSanitizer) {
@@ -43,11 +39,12 @@ export class MainViewerComponent implements OnInit {
 
     this.myCanvas = document.getElementById('my-canvas') as HTMLCanvasElement;
     this.myContext = this.myCanvas.getContext('2d');
-    this.cropx=this.myCanvas.getBoundingClientRect().left;
-    this.cropy=this.myCanvas.getBoundingClientRect().top;
-    console.log('cxx',this.cropx);
+    this.cropx = this.myCanvas.getBoundingClientRect().left;
+    this.cropy = this.myCanvas.getBoundingClientRect().top;
+    console.log('cxx', this.cropx);
     console.log('cyy', this.cropy);
     this.img = new Image();
+
 
 
 
@@ -56,50 +53,7 @@ export class MainViewerComponent implements OnInit {
 
     this._interaction.EditMode$.subscribe(massage => {this.Mode = massage; console.log('mode in viewer', this.Mode); });
     this.LoadImage();
-    let drawing = new SVG('svg');
-    let rect = drawing.rect().draw();
-  //   rect.on('drawstart', function(event){
-  //     console.log(event.detail); // Holds event, current Point-coords and matrix
-
-  // });
-
-
-
-
-    drawing.on('mousedown', function(event) {
-    rect.draw(event);
-    console.log('down');
-    this.startX = event.clientX;
-    this.startY = event.clientY;
-    console.log('sx', this.startX);
-    console.log('sy', this.startY);
-
-
-
-
-});
-    drawing.on('mouseup', function(event) {
-  rect.draw('stop', event);
-  // console.log("up");
-  // console.log(event.clientY);
-  this.endX = event.clientX;
-  this.endY = event.clientY;
-  console.log('ex', this.endX);
-  console.log('ey', this.endY);
-  this.width = Math.abs(this.endX - this.startX);
-  this.height = Math.abs(this.endY - this.startY);
-  console.log('w', this.width);
-  console.log('h', this.height);
-  console.log('cropx', this.cropx);
-  console.log('cropy', this.cropy);
-
-});
-    rect.on('drawstop', function() {
-  // remove listener
-
-
-
-});
+    this.CropMode(this.SVGElement);
 
 
 
@@ -119,6 +73,61 @@ export class MainViewerComponent implements OnInit {
 
 
   }
+
+
+  CropMode(SVGSheet){
+
+    SVGSheet.svg = new SVG('svg');
+    let rect = SVGSheet.svg.rect().draw();
+    SVGSheet.svg.on('mousedown', function(event) {
+    rect.draw(event);
+    console.log('down');
+    SVGSheet.startX=event.clientX;
+    SVGSheet.startY= event.clientY;
+    console.log('sx', SVGSheet.startX);
+    console.log('sy', SVGSheet.startY);
+
+});
+    this.SVGElement.svg.on('mouseup', function(event) {
+  rect.draw('stop', event);
+  // console.log("up");
+  // console.log(event.clientY);
+  SVGSheet.endX = event.clientX;
+  SVGSheet.endY = event.clientY;
+  console.log('ex', SVGSheet.endX);
+  console.log('ey', SVGSheet.endY);
+  SVGSheet.calculateWidthAndHeight(SVGSheet.endX, SVGSheet.endY,SVGSheet.startX,SVGSheet.startY);
+  console.log('w', SVGSheet.drawingWidth);
+  console.log('h', SVGSheet. drawingHeight);
+  // console.log('cropx', SVGSheet.cropx);
+  // console.log('cropy', SVGSheet.cropy);
+
+});
+    rect.on('drawstop', function() {
+
+  // remove listener
+
+
+
+});
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
   LoadImage() {
 
     this.img.src = this.BigImageSource;
@@ -130,17 +139,7 @@ export class MainViewerComponent implements OnInit {
       const aspect = this.img.naturalWidth / this.img.naturalHeight;
       this.myContext.drawImage(this.img, 0, 0, imgWidth, imgHeight);
 
-      // console.log(this.myCanvas.getBoundingClientRect().top);
-      // // this.Crop();
-      // if(this.Mode=='Crop'){
-      //   console.log("start drawing");
-      //   this.Crop();
 
-      // }
-      // if(this.Mode=='zoom'){
-      //   this.Zoom();
-      //   console.log("start Zoming");
-      // }
 
 
 
@@ -170,150 +169,145 @@ export class MainViewerComponent implements OnInit {
 
   }
 
-  public Crop() {
-    //ctx.beginPath();
-    //ctx.rect(188, 50, 200, 100);
-    //ctx.stroke();
+//   public Crop() {
+//     //ctx.beginPath();
+//     //ctx.rect(188, 50, 200, 100);
+//     //ctx.stroke();
 
-    // get the canvas's position on the page
-    let mode = this.Mode;
-    let canvas = this.myCanvas;
-    let ctx = this.myContext;
-    let img = this.img;
-    let canvasx = canvas.getBoundingClientRect().left;
-    let canvasy = 73;
-    console.log('x', canvasx);
-    console.log('y', canvasy);
-    // set up variables to hold the mouse starting X/Y
-    // when the user drags the mouse
-    let startX = 0;
-    let startY = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-    let width = mouseX - startX;
-    let height = mouseY - startY;
-    let AspectRatio = img.naturalWidth / img.naturalHeight;
-    // indicate whether the user is dragging the mouse
-    let isDragging = false;
-    // listen for mousedown, call handleMouseDown when it’s pressed
+//     // get the canvas's position on the page
+//     let mode = this.Mode;
+//     let canvas = this.myCanvas;
+//     let ctx = this.myContext;
+//     let img = this.img;
+//     let canvasx = canvas.getBoundingClientRect().left;
+//     let canvasy = 73;
+//     console.log('x', canvasx);
+//     console.log('y', canvasy);
+//     // set up variables to hold the mouse starting X/Y
+//     // when the user drags the mouse
 
-    document.getElementById('my-canvas').onmousedown = function(e) {handleMouseDown(e); };
+//     let AspectRatio = img.naturalWidth / img.naturalHeight;
+//     // indicate whether the user is dragging the mouse
+//     let isDragging = false;
+//     // listen for mousedown, call handleMouseDown when it’s pressed
 
-   // listen for mouseup, call handleMouseUp when it’s released
+//     document.getElementById('my-canvas').onmousedown = function(e) {handleMouseDown(e); };
 
-    document.getElementById('my-canvas').onmouseup = function(e) {handleMouseUp(e); };
+//    // listen for mouseup, call handleMouseUp when it’s released
 
-   // listen for mouse movements, call handleMouseMove when the mouse moves
+//     document.getElementById('my-canvas').onmouseup = function(e) {handleMouseUp(e); };
 
-    document.getElementById('my-canvas').onmousemove = function(e) {handleMouseMove(e); };
+//    // listen for mouse movements, call handleMouseMove when the mouse moves
 
-   // called when user presses the mouse button down
-// This is the start of a drag
+//     document.getElementById('my-canvas').onmousemove = function(e) {handleMouseMove(e); };
 
-    function handleMouseDown(e) {
+//    // called when user presses the mouse button down
+// // This is the start of a drag
 
-      // calculate the mouse position relative to the canvas
+//     function handleMouseDown(e) {
+
+//       // calculate the mouse position relative to the canvas
 
 
-      mouseX = e.clientX - canvasx;
-      mouseY = e.clientY - canvasy;
-      console.log('x2', e.clientX);
-      console.log('y2', e.clientY);
+//       mouseX = e.clientX - canvasx;
+//       mouseY = e.clientY - canvasy;
+//       console.log('x2', e.clientX);
+//       console.log('y2', e.clientY);
 
-      // store the starting mouse position
+//       // store the starting mouse position
 
-      startX = mouseX;
-      startY = mouseY;
+//       SVGElement.startX = mouseX;
+//       SVGElement.startY = mouseY;
 
-      // set isDragging to indicate we’re starting a drag.
+//       // set isDragging to indicate we’re starting a drag.
 
-      isDragging = true;
-    }
+//       isDragging = true;
+//     }
 
-    // called when the user releases the mouse button,
+//     // called when the user releases the mouse button,
 
-    function handleMouseUp(e) {
+//     function handleMouseUp(e) {
 
-      // the drag is over, clear the isDragging flag
-      mouseX = e.clientX - canvasx;
-      mouseY = e.clientY - canvasy;
-      width = mouseX - startX;
-      height = mouseY - startY;
-
-
-      isDragging = false;
-      console.log('startx', startX);
-      console.log('starty', startY);
-      console.log('mousex', mouseX);
-      console.log('mousey', mouseY);
-      if (width > 0) {
-      ApplyCropping(startX, startY, width, height, AspectRatio);
-
-    }
+//       // the drag is over, clear the isDragging flag
+//       mouseX = e.clientX - canvasx;
+//       mouseY = e.clientY - canvasy;
+//       width = mouseX - SVGElement.startX;
+//       height = mouseY - SVGElement.startY;
 
 
-    }
+//       isDragging = false;
+//       console.log('SVGElement.startX', SVGElement.startX);
+//       console.log('SVGElement.startY', SVGElement.startY);
+//       console.log('mousex', mouseX);
+//       console.log('mousey', mouseY);
+//       if (width > 0) {
+//       ApplyCropping(SVGElement.startX, SVGElement.startY, width, height, AspectRatio);
 
-    // called repeatedly when the user drags the mouse
-
-    function handleMouseMove(e) {
-
-  // calculate the mouse position relative to the canvas
-
-  mouseX = e.clientX - canvasx;
-  mouseY = e.clientY - canvasy;
-  width = mouseX - startX;
-  height = mouseY - startY;
-  console.log('width', width);
-  console.log ('height', height);
+//     }
 
 
-  // if the user isn’t dragging, just exit
+//     }
 
-  if ( !isDragging ) { return; }
+//     // called repeatedly when the user drags the mouse
+
+//     function handleMouseMove(e) {
+
+//   // calculate the mouse position relative to the canvas
+
+//   mouseX = e.clientX - canvasx;
+//   mouseY = e.clientY - canvasy;
+//   width = mouseX - SVGElement.startX;
+//   height = mouseY - SVGElement.startY;
+//   console.log('width', width);
+//   console.log ('height', height);
+
+
+//   // if the user isn’t dragging, just exit
+
+//   if ( !isDragging ) { return; }
 
 
 
-  if (width > 0) {
-      // clear the canvas in preparation for drawing a modified square/rectangle
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+//   if (width > 0) {
+//       // clear the canvas in preparation for SVGElement.svg a modified square/rectangle
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    // call a function that draws a rectangle
+//     // call a function that draws a rectangle
 
-    drawRectangle(startX, startY, width, height);
+//     drawRectangle(SVGElement.startX, SVGElement.startY, width, height);
 
-    }
+//     }
 
 
 
 
 
 
-    }
+//     }
 
 
-    function drawRectangle(startX, startY, width, height) {
-
-
-
-    ctx.beginPath();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = 'red';
-    ctx.rect(startX, startY, width, height);
-    ctx.stroke();
+//     function drawRectangle(SVGElement.startX, SVGElement.startY, width, height) {
 
 
 
-    }
-    function ApplyCropping(startX, startY, width, height, AspectRatio) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, startX, startY, width, height, 0, 0, canvas.width, canvas.height );
+//     ctx.beginPath();
+//     ctx.lineWidth = 3;
+//     ctx.strokeStyle = 'red';
+//     ctx.rect(SVGElement.startX, SVGElement.startY, width, height);
+//     ctx.stroke();
 
-    }
 
 
-  }
+//     }
+//     function ApplyCropping(SVGElement.startX, SVGElement.startY, width, height, AspectRatio) {
+//       ctx.clearRect(0, 0, canvas.width, canvas.height);
+//       ctx.drawImage(img, SVGElement.startX, SVGElement.startY, width, height, 0, 0, canvas.width, canvas.height );
+
+//     }
+
+
+//   }
 
   Zoom() {
 
