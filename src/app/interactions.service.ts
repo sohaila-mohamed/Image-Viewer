@@ -22,4 +22,11 @@ export class InteractionsService {
     console.log("grayfilter order");
 
   }
+  private _EditMode=new Subject <string>();
+  EditMode$=this._EditMode.asObservable();
+  SendSelectedMode(mode){
+    this._EditMode.next(mode);
+  }
+
+
 }

@@ -1,0 +1,38 @@
+{
+  "name": "svg.draw.js",
+  "version": "2.0.3",
+  "homepage": "https://github.com/svgdotjs/svg.draw.js",
+  "authors": [
+    "Ulrich-Matthias Schäfer"
+  ],
+  "description": "An extension for svn.js which allows to draw elements with mouse",
+  "main": [
+    "./dist/svg.draw.js"
+  ],
+  "keywords": [
+    "svg.js",
+    "draw",
+    "mouse"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "svg.js": "2.x.x"
+  },
+  "_release": "2.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.3",
+    "commit": "11884d202fdb6573fe792a476451fe70dedacf48"
+  },
+  "_source": "https://github.com/svgdotjs/svg.draw.js.git",
+  "_target": "^2.0.3",
+  "_originalSource": "svg.draw.js",
+  "_direct": true
+}

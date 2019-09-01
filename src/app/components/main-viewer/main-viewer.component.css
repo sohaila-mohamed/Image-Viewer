@@ -14,4 +14,21 @@
   height: 300px; */
   cursor: crosshair;
   border: 1px solid #000000;
+  position: relative;
+
+
+}
+svg{
+
+  margin-top: 50px;
+  margin-left: -400px;
+  width: 400px;
+  height: 300px;
+  cursor: crosshair;
+  border: 1px solid #000000;
+  z-index: 1000;
+  position: absolute;
+
+
+
 }

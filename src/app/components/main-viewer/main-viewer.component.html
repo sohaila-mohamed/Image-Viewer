@@ -4,6 +4,11 @@
     <div class="col-2"></div>
     <div class="col-lg-8 BigImageViewer">
       <canvas  *ngIf="BigImageSource" id="my-canvas" ></canvas>
+      <svg id="svg" *ngIf="BigImageSource" xmlns="http://www.w3.org/2000/svg">
+        <!-- <circle r="50" cx="10" cy="10" fill="red"/>
+        <rect x="120" y="5" width="90" height="90"
+              stroke="blue" fill="none"/> -->
+      </svg>
     </div>
     <div class="col-2">
 
