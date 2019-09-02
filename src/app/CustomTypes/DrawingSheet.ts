@@ -39,10 +39,12 @@ export class SVGDrawingSheet implements  ISVGDrawingSheet{
 
 }
 
-export interface CanvasDrawingSheet {
+export class CanvasDrawingSheet {
   positionX: number;
   positionY: number;
-  width: number;
-  height: number;
+  Canvas: HTMLCanvasElement;
+  Context: CanvasRenderingContext2D;
+  cropx: number;
+  cropy: number;
 }
 

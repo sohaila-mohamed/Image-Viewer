@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, SecurityContext } from '@angular/core';
 import { InteractionsService } from 'src/app/interactions.service';
 import { DataService } from 'src/app/Data.service';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
-import { SVGDrawingSheet } from '../../CustomTypes/DrawingSheet';
+import { SVGDrawingSheet, CanvasDrawingSheet } from '../../CustomTypes/DrawingSheet';
 declare const SVG: any;
 
 @Component({
@@ -14,13 +14,10 @@ export class MainViewerComponent implements OnInit {
   ImageID: string;
   BigImageSource: string;
   Mode: string;
-
-  myCanvas: HTMLCanvasElement;
-  myContext: CanvasRenderingContext2D;
   img: HTMLImageElement;
-  cropx: number;
-  cropy: number;
   SVGElement: SVGDrawingSheet = new SVGDrawingSheet();
+  CanvasElement:CanvasDrawingSheet = new CanvasDrawingSheet();
+
 
 
 
@@ -36,14 +33,12 @@ export class MainViewerComponent implements OnInit {
     this.BigImageSource = this.domSanitizer.sanitize(
       SecurityContext.RESOURCE_URL, this.domSanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(data)));
     console.log('Image Request From Angular', this.BigImageSource, typeof(this.BigImageSource));
-
-    this.myCanvas = document.getElementById('my-canvas') as HTMLCanvasElement;
-    this.myContext = this.myCanvas.getContext('2d');
-    this.cropx = this.myCanvas.getBoundingClientRect().left;
-    this.cropy = this.myCanvas.getBoundingClientRect().top;
-    console.log('cxx', this.cropx);
-    console.log('cyy', this.cropy);
+    this.CanvasElement.Canvas = document.getElementById('my-canvas') as HTMLCanvasElement;
+    this.CanvasElement.Context = this.CanvasElement.Canvas.getContext('2d');
+    this.CanvasElement.positionX= this.CanvasElement.Canvas.getBoundingClientRect().left;
+    this.CanvasElement.positionY = Math.abs(this.CanvasElement.Canvas.getBoundingClientRect().top);
     this.img = new Image();
+    this.SVGElement.svg = new SVG('svg');
 
 
 
@@ -51,9 +46,16 @@ export class MainViewerComponent implements OnInit {
 
     this._interaction.GrayFilter$.subscribe(massage => {this.grayscale(); console.log('recived'); });
 
-    this._interaction.EditMode$.subscribe(massage => {this.Mode = massage; console.log('mode in viewer', this.Mode); });
+    this._interaction.EditMode$.subscribe(massage => {this.Mode = massage; console.log('mode in viewer', this.Mode);
+                                                      if (this.Mode == 'crop') {this.CallSelectArea(); }
+
+
+
+    });
     this.LoadImage();
-    this.CropMode(this.SVGElement);
+
+
+
 
 
 
@@ -75,43 +77,66 @@ export class MainViewerComponent implements OnInit {
   }
 
 
-  CropMode(SVGSheet){
+  CallSelectArea() {
+    this.SelectArea(this.SVGElement,this.CanvasElement,this.img);
+  }
 
-    SVGSheet.svg = new SVG('svg');
-    let rect = SVGSheet.svg.rect().draw();
+  ApplyCropping(){
+    console.log(this);
+  }
+
+
+  SelectArea(SVGSheet,CanvasSheet,img)  {
+
+    let rect = SVGSheet.svg.rect().attr({
+      fill: 'transparent'
+    , stroke: '#000'
+    , 'stroke-width': 10
+    });
+
     SVGSheet.svg.on('mousedown', function(event) {
     rect.draw(event);
     console.log('down');
-    SVGSheet.startX=event.clientX;
-    SVGSheet.startY= event.clientY;
-    console.log('sx', SVGSheet.startX);
-    console.log('sy', SVGSheet.startY);
+    SVGSheet.startX = event.clientX;
+    SVGSheet.startY = event.clientY;
+    console.log('sx',event.clientX);
+    console.log('sy', event.clientY);
 
 });
     this.SVGElement.svg.on('mouseup', function(event) {
-  rect.draw('stop', event);
+    rect.draw('stop', event);
   // console.log("up");
   // console.log(event.clientY);
-  SVGSheet.endX = event.clientX;
-  SVGSheet.endY = event.clientY;
-  console.log('ex', SVGSheet.endX);
-  console.log('ey', SVGSheet.endY);
-  SVGSheet.calculateWidthAndHeight(SVGSheet.endX, SVGSheet.endY,SVGSheet.startX,SVGSheet.startY);
-  console.log('w', SVGSheet.drawingWidth);
-  console.log('h', SVGSheet. drawingHeight);
-  // console.log('cropx', SVGSheet.cropx);
-  // console.log('cropy', SVGSheet.cropy);
+    SVGSheet.endX = event.clientX;
+    SVGSheet.endY = event.clientY;
+    console.log('ex', SVGSheet.endX);
+    console.log('ey', SVGSheet.endY);
+    SVGSheet.calculateWidthAndHeight(SVGSheet.endX, SVGSheet.endY, SVGSheet.startX, SVGSheet.startY);
+    console.log('w', SVGSheet.drawingWidth);
+    console.log('h', SVGSheet. drawingHeight);
+    console.log("clear");
+    rect.remove();
+    crop();
+
 
 });
-    rect.on('drawstop', function() {
-
+rect.on('drawstop', function(){
   // remove listener
-
-
-
 });
 
 
+
+function crop(){
+  CanvasSheet.cropX=SVGSheet.startX-CanvasSheet.positionX;
+  CanvasSheet.cropY=SVGSheet.startY-76;
+  console.log( "cx",CanvasSheet.cropX);
+  console.log("cy",CanvasSheet.cropY);
+  console.log( "px",CanvasSheet.positionX);
+  console.log("py",CanvasSheet.positionY);
+  const aspect = img.naturalWidth / img.naturalHeight;
+  CanvasSheet.Context.drawImage(img, CanvasSheet.cropX, CanvasSheet.cropY, SVGSheet.drawingWidth, SVGSheet.drawingHeight, 0, 0, CanvasSheet.Canvas.width, CanvasSheet.Canvas.height );
+  console.log(CanvasSheet.cropX, CanvasSheet.cropY, SVGSheet.drawingWidth,  SVGSheet.drawingWidth/aspect, 0, 0, CanvasSheet.Canvas.width, CanvasSheet.Canvas.height);
+}
 
 
 
@@ -119,6 +144,8 @@ export class MainViewerComponent implements OnInit {
 
 
   }
+
+
 
 
 
@@ -134,10 +161,9 @@ export class MainViewerComponent implements OnInit {
     this.img.onload = () => {
       const imgWidth = this.img.width;
       const imgHeight = this.img.height;
-      this.myCanvas.width = imgWidth;
-      this.myCanvas.height = imgHeight;
-      const aspect = this.img.naturalWidth / this.img.naturalHeight;
-      this.myContext.drawImage(this.img, 0, 0, imgWidth, imgHeight);
+      this.CanvasElement.Canvas.width = imgWidth;
+      this.CanvasElement.Canvas.height = imgHeight;
+      this.CanvasElement.Context.drawImage(this.img, 0, 0, imgWidth, imgHeight);
 
 
 
@@ -149,7 +175,7 @@ export class MainViewerComponent implements OnInit {
 
   grayscale() {
     console.log('on Gray');
-    let ImgData = this.myContext.getImageData(0, 0, this.myCanvas.width, this.myCanvas.height);
+    let ImgData = this.CanvasElement.Context.getImageData(0, 0, this.CanvasElement.Canvas.width, this.CanvasElement.Canvas.height);
     let arr = ImgData.data;
     console.log('before', ImgData.data);
     for (let i = 0; i < arr.length; i = i + 4) {
@@ -163,20 +189,20 @@ export class MainViewerComponent implements OnInit {
         }
 
     ImgData.data.set(arr);
-    this.myContext.putImageData(ImgData, 0, 0);
+    this.CanvasElement.Context.putImageData(ImgData, 0, 0);
     console.log('after', ImgData.data);
 
 
   }
 
-//   public Crop() {
+//   public SelectArea() {
 //     //ctx.beginPath();
 //     //ctx.rect(188, 50, 200, 100);
 //     //ctx.stroke();
 
 //     // get the canvas's position on the page
 //     let mode = this.Mode;
-//     let canvas = this.myCanvas;
+//     let canvas = this.CanvasElement.Canvas;
 //     let ctx = this.myContext;
 //     let img = this.img;
 //     let canvasx = canvas.getBoundingClientRect().left;
